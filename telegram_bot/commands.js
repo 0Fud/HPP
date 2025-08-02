@@ -11,7 +11,8 @@ import {
     analyzeRedisSync,
     getSubAccountBalances,
 } from '../utils.js';
-import { initializeConfig } from '../server.js'; // Importuojama iš pagrindinio failo
+// PATAISYMAS: Importuojama iš teisingo failo 'app-setup.js'
+import { initializeConfig } from '../app-setup.js';
 
 // Middleware, tikrinantis, ar vartotojas yra administratorius.
 const isAdmin = (ctx, next) => {
@@ -146,7 +147,7 @@ export const registerCommands = (bot) => {
 
                     for (const pos of positions) {
                         totalActivePositions++;
-                        const managedIcon = pos.isManaged ? '✅' : '�';
+                        const managedIcon = pos.isManaged ? '✅' : '🚨';
                         const protectionIcon = pos.hasStopLoss && pos.hasTakeProfit ? '🛡️' : '⚠️';
                         const sideIcon = pos.side === 'Buy' ? '📈' : '📉';
 
@@ -320,7 +321,7 @@ export const registerCommands = (bot) => {
 
         } catch (error) {
             console.error('Klaida /transfer komandoje:', error);
-            await ctx.reply(`🆘 Įvyko klaida: ${error.message}`);
+            await ctx.reply(`� Įvyko klaida: ${error.message}`);
         }
     });
 

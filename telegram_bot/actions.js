@@ -5,7 +5,8 @@ import { ADMIN_ID, CONFIG_KEYS, MAX_SUBACCOUNTS_NUM } from '../config.js';
 import { redisClient, tradingQueue } from '../services/redis.js';
 import { sendTelegramMessage } from '../services/telegram.js';
 import { getSubAccountBalances, executeInternalTransfer } from '../utils.js';
-import { initializeConfig } from '../server.js'; // Importuojama iš pagrindinio failo
+// PATAISYMAS: Importuojama iš teisingo failo 'app-setup.js'
+import { initializeConfig } from '../app-setup.js';
 
 // Middleware, tikrinantis, ar vartotojas yra administratorius.
 const isAdmin = (ctx, next) => {
