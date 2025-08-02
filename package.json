@@ -1,0 +1,23 @@
+{
+    "name": "hpp-bybit-bot",
+    "version": "1.0.0",
+    "description": "Automatizuotas prekybos botas, skirtas Bybit biržai.",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "author": "Airidas Siaurys",
+    "license": "ISC",
+    "dependencies": {
+      "axios": "^1.7.2",
+      "bullmq": "^5.10.2",
+      "bybit-api": "^3.10.1",
+      "dotenv": "^16.4.5",
+      "express": "^4.19.2",
+      "googleapis": "^140.0.1",
+      "redis": "^4.6.15",
+      "telegraf": "^4.16.3"
+    }
+  }
+  
