@@ -1,0 +1,8 @@
+# Priklausomybės
+node_modules
+
+# Aplinkos kintamieji
+.env
+
+# Sisteminiai failai
+.DS_Store
