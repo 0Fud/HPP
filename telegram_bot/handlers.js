@@ -3,6 +3,7 @@
 
 import { ADMIN_ID, CONFIG_KEYS } from '../config.js';
 import { redisClient } from '../services/redis.js';
+import { SUBMENUS } from './ux_helpers.js';
 
 // Middleware, tikrinantis, ar vartotojas yra administratorius.
 const isAdmin = (ctx, next) => {
@@ -36,18 +37,26 @@ export const registerHandlers = (bot) => {
             }
 
             try {
+                let successMessage = '';
                 if (type === CONFIG_KEYS.RISK_USD) {
                     await redisClient.set(type, value);
-                    await ctx.replyWithMarkdown(`✅ Rizikos dydis sėkmingai pakeistas į: *${value} USD*`);
+                    successMessage = `✅ Rizikos dydis sėkmingai pakeistas į: *${value} USD*`;
                 } else if (type === CONFIG_KEYS.BUFFER_PERCENT) {
                     if (value >= 100) {
                         return ctx.reply('❌ Buferis negali būti 100% ar daugiau.');
                     }
                     const bufferValue = value / 100;
                     await redisClient.set(type, bufferValue);
-                    await ctx.replyWithMarkdown(`✅ Saugumo buferis sėkmingai pakeistas į: *${value}%*`);
+                    successMessage = `✅ Saugumo buferis sėkmingai pakeistas į: *${value}%*`;
                 }
                 await redisClient.del(configSessionKey); // Išvalome sesiją
+                
+                // Grąžiname vartotoją į nustatymų meniu
+                const menu = SUBMENUS['settings'];
+                await ctx.replyWithMarkdown(successMessage + '\n\n' + menu.text, {
+                     reply_markup: { inline_keyboard: menu.keyboard }
+                });
+
             } catch (error) {
                 await ctx.reply(`🆘 Klaida išsaugant nustatymą: ${error.message}`);
             }
@@ -62,14 +71,13 @@ export const registerHandlers = (bot) => {
 
             const keyboard = [
                 [{ text: '✅ Taip, patvirtinti', callback_data: `confirm_transfer_${fromSubId}_${toSubId}_${amount}` }],
-                [{ text: '❌ Ne, atšaukti', callback_data: 'transfer_cancel' }]
+                [{ text: '❌ Ne, atšaukti', callback_data: 'back_finance' }]
             ];
 
             await ctx.replyWithMarkdown(
                 `*🔔 Pervedimo Patvirtinimas*\n\nAr tikrai norite pervesti *${amount.toFixed(2)} USDT* iš *Sub-${fromSubId}* į *Sub-${toSubId}*?`,
                 { reply_markup: { inline_keyboard: keyboard } }
             );
-            // Svarbu: neištriname sesijos rakto čia, nes laukiame patvirtinimo mygtuko paspaudimo.
         }
     });
 };

@@ -16,7 +16,6 @@ const app = express();
 app.use(express.json());
 
 // --- WEBHOOK ENDPOINT ---
-// Ši dalis lieka čia, nes yra tiesiogiai susijusi su Express serveriu.
 app.post('/webhook', async (req, res) => {
     console.log('\n--- Gaunamas signalas, dedamas į eilę ---');
     const data = req.body;
@@ -61,7 +60,7 @@ const startServer = async () => {
 
         // 5. Paleidžiamas Express serveris
         app.listen(port, '0.0.0.0', () => {
-            const msg = `🚀 Bybit botas (v16.2 - Modulinis) paleistas ant porto ${port}\n` +
+            const msg = `🚀 Bybit botas (v13.0 - Naujas UX) paleistas ant porto ${port}\n` +
                 `- Aktyvuota ${bybitClients.size} iš ${MAX_SUBACCOUNTS_NUM} sub-sąskaitų.\n` +
                 `- Eilės sistema veikia.\n` +
                 `- Telegram botas klauso komandų.`;
